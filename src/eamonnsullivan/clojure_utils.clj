@@ -56,3 +56,11 @@
   { :pre [(s/valid? ::is-seq seqa) (s/valid? ::is-seq seqb)] }
   (if (and (counted? seqa) (counted? seqb))
     (> (count seqa) (count seqb))))
+
+;; (let [times 100.0] (/ (reduce + (for [x (range times)] ((bench (* 100 100)) :elapsed))) times))
+(defmacro bench
+  "Benchmark an expression"
+  [expr]
+  `(let [start# (System/nanoTime)
+         result# ~expr]
+    {:result result# :elapsed (- (System/nanoTime) start#)}))
